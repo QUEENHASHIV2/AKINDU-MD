@@ -7,26 +7,25 @@ cmd({
     alias: ["status", "runtime", "uptime"],
     desc: "Check uptime and system status",
     category: "main",
-    react: "📟",
+    react: "👋",
     filename: __filename
 },
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
         // Generate system status message
-        const status = `╭━━〔 *SHABAN-SOBX-MD* 〕━━┈⊷
-┃◈╭─────────────·๏
-┃◈┃• *⏳Uptime*:  ${runtime(process.uptime())} 
-┃◈┃• *📟 Ram usage*: ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB / ${(os.totalmem() / 1024 / 1024).toFixed(2)}MB
-┃◈┃• *⚙️ HostName*: ${os.hostname()}
-┃◈┃• *👨‍💻 Owner*: Mʀ Sʜᴀʙᴀɴ
-┃◈┃• *🧬 Version*: V5 BETA
-┃◈└───────────┈⊷
-╰──────────────┈⊷
-> © ᴘᴏᴡᴇʀᴇᴅ ʙʏ Mʀ Sʜᴀʙᴀɴ`;
+        const status = `*${pushname}*
+
+ *⏳Uptime*:  *${runtime(process.uptime())}*
+ *📟 Ram usage*: *${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB / ${(os.totalmem() / 1024 / 1024).toFixed(2)}MB*
+ *⚙️ HostName*: *${os.hostname()}*
+ *👨‍💻 Owner*: *MR AKINDU*
+ *🧬 Version*: *1.0.0*
+
+> AKINDU MD`;
 
         // Send the status message with an image
         await conn.sendMessage(from, { 
-            image: { url: `https://i.ibb.co/9N1sJ41/Manul-Ofc-X.jpg` },  // Image URL
+            image: { url: `https://i.ibb.co/nMky5xTB/7341.jpg` },  // Image URL
             caption: status,
             contextInfo: {
                 mentionedJid: [m.sender],
