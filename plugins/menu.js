@@ -9,18 +9,18 @@ cmd({
     pattern: "menu",
     alias: ["list"],
     desc: "menu the bot",
-    react: "📲",
+    react: "📃",
     category: "main"
 },
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
         let desc = `
 *╭┉┉┉┉┅┅┅══════┈┈┈┉┉┉┉*
-*╏▸* *ʀᴜɴᴛɪᴍᴇ* : ${runtime(process.uptime())}
-*╏▸* *ᴍᴏᴅᴇ* : *[${config.MODE}]*
-*╏▸* *ᴘʀᴇғɪx* : *[${config.PREFIX}]*
-*╏▸* *ʀᴀᴍ ᴜsᴇ* : ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB / ${Math.round(require('os').totalmem / 1024 / 1024)}MB
-*╏▸* *ᴄʀᴇᴀᴛᴏʀ* : *➺ᴛᴇᴄʜ ʟᴏʀᴅ࿐*
+*╏▸* *ʀᴜɴᴛɪᴍᴇ* : *${runtime(process.uptime())}*
+*╏▸* *ᴍᴏᴅᴇ* : *${config.MODE}*
+*╏▸* *ᴘʀᴇғɪx* : *${config.PREFIX}*
+*╏▸* *ʀᴀᴍ ᴜsᴇ* : ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB / ${Math.round(require('os').totalmem / 1024 / 1024)}MB*
+*╏▸* *ᴄʀᴇᴀᴛᴏʀ* : *AKINDU*
 *╰━━━━∙⋆⋅⋆∙━ ─┉─ • ─┉─⊷*
   ─┈┈┄┉┉┉┅┅┅☻┅┅┅┅┉┈┈┈─
 *╭━━┉┉━━┉┉━━┉*
@@ -38,7 +38,7 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
 
 *╰┈➤ʀᴇᴘʟʏ ᴡɪᴛʜ ᴛʜᴇ ɴᴜᴍʙᴇʀ ʏᴏᴜ ᴡᴀɴᴛ ᴛᴏ sᴇʟᴇᴄᴛ*
 
-> *© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴛᴇᴄʜ ʟᴏʀᴅッ*`;
+> *AKINDU MD*`;
 
         const vv = await conn.sendMessage(from, { image: { url:config.ALIVE_IMG}, caption: desc }, { quoted: mek });
 
