@@ -15,28 +15,24 @@ cmd({
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
         let desc = `
-*╭┉┉┉┉┅┅┅══════┈┈┈┉┉┉┉*
 *╏▸* *ʀᴜɴᴛɪᴍᴇ* : *${runtime(process.uptime())}*
 *╏▸* *ᴍᴏᴅᴇ* : *${config.MODE}*
 *╏▸* *ᴘʀᴇғɪx* : *${config.PREFIX}*
-*╏▸* *ʀᴀᴍ ᴜsᴇ* : ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB / ${Math.round(require('os').totalmem / 1024 / 1024)}MB*
+*╏▸* *ʀᴀᴍ ᴜsᴇ* : *${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB / ${Math.round(require('os').totalmem / 1024 / 1024)}MB*
 *╏▸* *ᴄʀᴇᴀᴛᴏʀ* : *AKINDU*
-*╰━━━━∙⋆⋅⋆∙━ ─┉─ • ─┉─⊷*
-  ─┈┈┄┉┉┉┅┅┅☻┅┅┅┅┉┈┈┈─
-*╭━━┉┉━━┉┉━━┉*
-*┋☛ ➊ • ᴏᴡɴᴇʀ*
-*┋☛ ➋ • ᴄᴏɴᴠᴇʀᴛ*
-*┋☛ ➌ • ᴀɪ*
-*┋☛ ➍ • sᴇᴀʀᴄʜ*
-*┋☛ ➎ • ᴅᴏᴡɴʟᴏᴀᴅ*
-*┋☛ ➏ • ᴍᴀɪɴ*
-*┋☛ ➐ • ɢʀᴏᴜᴘ*
-*┋☛ ➑ • ғᴜɴ*
-*┋☛ ➒ • ᴀɴɪᴍᴇ*
-*╿☛ ➓ • ᴏᴛʜᴇʀ*
-*╰━━┉┉┉━━┉┉━━┉*⁠⁠
 
-*╰┈➤ʀᴇᴘʟʏ ᴡɪᴛʜ ᴛʜᴇ ɴᴜᴍʙᴇʀ ʏᴏᴜ ᴡᴀɴᴛ ᴛᴏ sᴇʟᴇᴄᴛ*
+*1 • ᴏᴡɴᴇʀ*
+*2 • ᴄᴏɴᴠᴇʀᴛ*
+*3 • ᴀɪ*
+*4 • sᴇᴀʀᴄʜ*
+*5 • ᴅᴏᴡɴʟᴏᴀᴅ*
+*6 • ᴍᴀɪɴ*
+*7 • ɢʀᴏᴜᴘ*
+*8 • ғᴜɴ*
+*9 • ᴀɴɪᴍᴇ*
+*10• ᴏᴛʜᴇʀ*
+
+* ᴡɪᴛʜ ᴛʜᴇ ɴᴜᴍʙᴇʀ ʏᴏᴜ ᴡᴀɴᴛ ᴛᴏ sᴇʟᴇᴄᴛ*
 
 > *AKINDU MD*`;
 
