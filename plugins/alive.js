@@ -3,7 +3,7 @@ const os = require("os");
 const { runtime } = require('../lib/functions');
 
 cmd({
-    pattern: "alive",
+    pattern: "system",
     alias: ["status", "runtime", "uptime"],
     desc: "Check uptime and system status",
     category: "main",
@@ -22,18 +22,7 @@ async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sen
  *🧬 Version*: *1.0.0*
 
 > AKINDU MD`;
-
-        const vv = await conn.sendMessage(from, { image: { url:config.ALIVE_IMG}, caption: desc }, { quoted: mek });
-
-        conn.ev.on('messages.upsert', async (msgUpdate) => {
-            const msg = msgUpdate.messages[0];
-            if (!msg.message || !msg.message.extendedTextMessage) return;
-
-            const selectedOption = msg.message.extendedTextMessage.text.trim();
-                
-            
-        }, { quoted: mek });
-
+        
     } catch (e) {
         console.error("Error in alive command:", e);
         reply(`An error occurred: ${e.message}`);
