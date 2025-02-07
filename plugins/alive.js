@@ -1,30 +1,43 @@
-const { cmd, commands } = require('../command');
-const os = require("os");
-const { runtime } = require('../lib/functions');
 
+
+
+const config = require('../config')
+const {cmd , commands} = require('../command')
+const os = require("os")
+const {runtime} = require('../lib/functions')
 cmd({
     pattern: "system",
-    alias: ["status", "runtime", "uptime"],
-    desc: "Check uptime and system status",
+    react: "⚙️",
+    alias: ["uptime","status","runtime"],
+    desc: "cheack uptime",
     category: "main",
-    react: "👋",
     filename: __filename
 },
-async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
-    try {
-        // Generate system status message
-        const status = `*${pushname}*
+async(conn, mek, m,{from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply}) => {
+try{
+let status = `${pushname}
+*SYSTEM*
+*╭┈───━━┄┄┄┄━━┅┅┅┅┅┅┅┅*
+*┇  ◦* *UPTIME*
+*┇  ◦* ${runtime(process.uptime())}
+*┇  ◦*
+*┇  ◦* *RAM USAGE*
+*┇  ◦* ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB / ${Math.round(require('os').totalmem / 1024 / 1024)}MB
+*┇  ◦*
+*┇  ◦* *HOSTNAME*
+*┇  ◦* ${os.hostname()}
+*┇  ◦*
+*┇  ◦* *PLATFORM*
+*┇  ◦* ${process.env.DYNO ? "Heroku" : "Localhost"}
+*┇  ◦*
+*╰┄┄┄┄━━──━━━┉┉┉┉┉┉┉┉┉┉
 
- *⏳Uptime*:  *${runtime(process.uptime())}*
- *📟 Ram usage*: *${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB / ${(os.totalmem() / 1024 / 1024).toFixed(2)}MB*
- *⚙️ HostName*: *${os.hostname()}*
- *👨‍💻 Owner*: *MR AKINDU*
- *🧬 Version*: *1.0.0*
+> AKINDU MD
+`
+await conn.sendMessage(from,{image:{url:config.ALIVE_IMG},caption:`${status}`},{quoted:mek})
 
-> AKINDU MD`;
-        
-    } catch (e) {
-        console.error("Error in alive command:", e);
-        reply(`An error occurred: ${e.message}`);
-    }
-});
+}catch(e){
+console.log(e)
+reply(`${e}`)
+}
+})
