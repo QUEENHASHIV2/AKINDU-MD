@@ -1,625 +1,272 @@
-const config = require('../config');
-const { cmd, commands } = require('../command');
-const os = require("os");
-const { runtime } = require('../lib/functions');
-const axios = require('axios');
 
+
+
+const config = require('../config')
+const {cmd , commands} = require('../command')
+const os = require("os")
+const {runtime} = require('../lib/functions')
 cmd({
     pattern: "menu",
+    alias: ["list"],
     desc: "menu the bot",
-    category: "menu",
-    react: "⚡",
-    filename: __filename
-}, 
+    react: "📲",
+    category: "main"
+},
 async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
     try {
-        let dec = `╭━━━〔 *${config.BOT_NAME}* 〕━━━┈⊷
-┃★╭──────────────
-┃★│ Owner : *${config.OWNER_NAME}*
-┃★│ Baileys : *⌨︎Multi Device*
-┃★│ Type : *☁︎NodeJs*
-┃★│ Platform : *♲︎Heroku*
-┃★│ Mode : *[${config.MODE}]*
-┃★│ Prifix : *[${config.PREFIX}]*
-┃★│ Version : *3.0.0 Bᴇᴛᴀ☯︎*
-┃★╰──────────────
-╰━━━━━━━━━━━━━━━┈⊷
-╭━━〔 *☟︎𝗠𝗲𝗻𝘂 𝗟𝗶𝘀𝘁☟︎* 〕━━┈⊷
-┃◈╭─────────────·๏
-┃◈┃• aimenu
-┃◈┃• anmiemenu
-┃◈┃• convertmenu
-┃◈┃• funmenu
-┃◈┃• dlmenu
-┃◈┃• listcmd
-┃◈┃• mainmenu
-┃◈┃• groupmenu
-┃◈┃• allmenu
-┃◈┃• ownermenu
-┃◈┃• othermenu
-┃◈┃• logo <text>
-┃◈┃• repo
-┃◈└───────────┈⊷
-╰──────────────┈⊷
-> ${config.DESCRIPTION}`;
+        let desc = `
+*╭┉┉┉┉┅┅┅══════┈┈┈┉┉┉┉*
+*╏▸* *ʀᴜɴᴛɪᴍᴇ* : ${runtime(process.uptime())}
+*╏▸* *ᴍᴏᴅᴇ* : *[${config.MODE}]*
+*╏▸* *ᴘʀᴇғɪx* : *[${config.PREFIX}]*
+*╏▸* *ʀᴀᴍ ᴜsᴇ* : ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB / ${Math.round(require('os').totalmem / 1024 / 1024)}MB
+*╏▸* *ᴄʀᴇᴀᴛᴏʀ* : *➺ᴛᴇᴄʜ ʟᴏʀᴅ࿐*
+*╰━━━━∙⋆⋅⋆∙━ ─┉─ • ─┉─⊷*
+  ─┈┈┄┉┉┉┅┅┅☻┅┅┅┅┉┈┈┈─
+*╭━━┉┉━━┉┉━━┉*
+*┋☛ ➊ • ᴏᴡɴᴇʀ*
+*┋☛ ➋ • ᴄᴏɴᴠᴇʀᴛ*
+*┋☛ ➌ • ᴀɪ*
+*┋☛ ➍ • sᴇᴀʀᴄʜ*
+*┋☛ ➎ • ᴅᴏᴡɴʟᴏᴀᴅ*
+*┋☛ ➏ • ᴍᴀɪɴ*
+*┋☛ ➐ • ɢʀᴏᴜᴘ*
+*┋☛ ➑ • ғᴜɴ*
+*┋☛ ➒ • ᴀɴɪᴍᴇ*
+*╿☛ ➓ • ᴏᴛʜᴇʀ*
+*╰━━┉┉┉━━┉┉━━┉*⁠⁠
 
-        await conn.sendMessage(
-            from,
-            {
-                image: { url: `https://i.ibb.co/9N1sJ41/Manul-Ofc-X.jpg` },
-                caption: dec,
-                contextInfo: {
-                    mentionedJid: [m.sender],
-                    forwardingScore: 999,
-                    isForwarded: true,
-                    forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363358310754973@newsletter',
-                        newsletterName: 'Mʀ-Sʜᴀʙᴀɴ',
-                        serverMessageId: 143
-                    }
+*╰┈➤ʀᴇᴘʟʏ ᴡɪᴛʜ ᴛʜᴇ ɴᴜᴍʙᴇʀ ʏᴏᴜ ᴡᴀɴᴛ ᴛᴏ sᴇʟᴇᴄᴛ*
+
+> *© ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴛᴇᴄʜ ʟᴏʀᴅッ*`;
+
+        const vv = await conn.sendMessage(from, { image: { url:config.ALIVE_IMG}, caption: desc }, { quoted: mek });
+
+        conn.ev.on('messages.upsert', async (msgUpdate) => {
+            const msg = msgUpdate.messages[0];
+            if (!msg.message || !msg.message.extendedTextMessage) return;
+
+            const selectedOption = msg.message.extendedTextMessage.text.trim();
+
+            if (msg.message.extendedTextMessage.contextInfo && msg.message.extendedTextMessage.contextInfo.stanzaId === vv.key.id) {
+                switch (selectedOption) {
+                    case '1':
+                        reply(`❕ 𝙾𝚆𝙽𝙴𝚁 𝙲𝙾𝙼𝙼𝙰𝙽𝙳 𝙻𝙸𝚂𝚃 ❗
+
+╭─┈┄┉┅┅┅┅┅┅┅┅┅┅┅┅
+┋ ◉ *.ᴏᴡɴᴇʀ*
+┋ ◉ *.ʀᴇᴘᴏ*
+┋ ◉ *.ꜱʏꜱᴛᴇᴍ*
+┋ ◉ *.ꜱᴛᴀᴛᴜꜱ*
+┋ ◉ *.ʙʟᴏᴄᴋ*
+┋ ◉ *.ᴜɴʙʟᴏᴄᴋ*
+┋ ◉ *.ᴄʟᴇᴀʀᴄʜᴀᴛs*
+┋ ◉ *.sᴇᴛᴘᴘ*
+┋ ◉ *.ʙʀᴏᴀᴅᴄᴀsᴛ*
+┋ ◉ *.ᴊɪᴅ*
+┋ ◉ *.ɢᴊɪᴅ*
+┋ ◉ *.ʀᴇꜱᴛᴀʀᴛ*
+┋ ◉ *.ᴜᴘᴅᴀᴛᴇ*
+┋ ◉ *.ᴜᴘᴅᴀᴛᴇᴄᴍᴅ*
+┋ ◉ *.sʜᴜᴛᴅᴏᴡɴ*
+┋ ◉ *.ᴀʟɪᴠᴇ*
+┋ ◉ *.ᴀʙᴏᴜᴛ*
+┋ ◉ *.ᴅᴇʟᴇᴛᴇ*
+╰━━━━∙⋆⋅⋆∙━ • ─┉─⊷
+
+⭓ *ᴛᴏᴛᴀʟ ᴄᴏᴍᴍᴀɴᴅs ʟɪsᴛ ᴏᴡɴᴇʀ: 18*
+
+> *© ʟᴏʀᴅ xᴍᴅ ᴄʀᴇᴀᴛᴇᴅ ʙʏ ᴋɪɴɢ ᴍᴀʟᴠɪɴッ*`);
+                        break;
+                    case '2':               
+                        repl (`❕ 𝙲𝙾𝙽𝚅𝙴𝚁𝚃 𝙲𝙾𝙼𝙼𝙰𝙽𝙳 𝙻𝙸𝚂𝚃 ❗
+
+╭─┈┄┉┅┅┅┅┅┅┅┅┅┅┅┅
+┋ ◉ *ᴄᴏɴᴠᴇʀᴛ* 
+┋ ◉ *s* 
+┋ ◉ sᴛɪᴄᴋᴇʀ
+╰━━━━∙⋆⋅⋆∙━ •─┉─⊷
+
+⭓ *ᴛᴏᴛᴀʟ ᴄᴏᴍᴍᴀɴᴅs ʟɪsᴛ ᴄᴏɴᴠᴇʀᴛ: 2*
+
+> *© ʟᴏʀᴅ xᴍᴅ ᴄʀᴇᴀᴛᴇᴅ ʙʏ ᴋɪɴɢ ᴍᴀʟᴠɪɴッ*`);
+                        break;
+                    case '3':               
+                        reply(`❗𝙰𝙸 𝙲𝙾𝙼𝙼𝙰𝙽𝙳 𝙻𝙸𝚂𝚃 ❓
+
+╭─┈┄┉┅┅┅┅┅┅┅┅┅┅┅┅
+┋ ◉ *ᴀɪ* 
+┋ ◉ *ɢᴏᴏɢʟᴇ*
+┋ ◉ *ɢᴇᴍɪɴ*
+┋ ◉ *ʟᴏʀᴅx*
+╰━━━━∙⋆⋅⋆∙━ • ─┉─⊷
+
+⭓ *ᴛᴏᴛᴀʟ ᴄᴏᴍᴍᴀɴᴅs ʟɪsᴛ ᴀɪ: 4*
+
+> *© ʟᴏʀᴅ xᴍᴅ ᴄʀᴇᴀᴛᴇᴅ ʙʏ ᴋɪɴɢ ᴍᴀʟᴠɪɴッ*`);
+                        break;
+                    case '4':               
+                        reply(`❗ 𝚂𝙴𝙰𝚁𝙲𝙷 𝙲𝙾𝙼𝙼𝙰𝙽𝙳 𝙻𝙸𝚂𝚃 ❗
+
+╭─┈┄┉┅┅┅┅┅┅┅┅┅┅┅┅
+┋ ◉ *ᴘʟᴀʏ* 
+┋ ◉ *sᴏɴɢ*
+┋ ◉ *ᴠɪᴅᴇᴏ* 
+┋ ◉ *.ʏᴛ  <ᴛᴇxᴛ>*
+┋ ◉ *.ʟᴏʟɪ <ᴛᴇxᴛ>*
+┋ ◉ *.ᴍᴏᴠɪᴇ <ᴛᴇxᴛ>*
+┋ ◉ *.ɪᴍɢ <ᴛᴇxᴛ>*
+┋ ◉ *.ᴡᴇᴀᴛʜᴇʀ <ᴄɪᴛʏ>*
+╰━━━━∙⋆⋅⋆∙━ • ─┉─⊷
+
+⭓ *ᴛᴏᴛᴀʟ ᴄᴏᴍᴍᴀɴᴅs ʟɪsᴛ sᴇᴀʀᴄʜ: 8*
+
+> *ʟᴏʀᴅ xᴍᴅ ᴄʀᴇᴀᴛᴇᴅ ʙʏ ᴋɪɴɢ ᴍᴀʟᴠɪɴッ*`);
+                        break;
+                    case '5':               
+                        reply(`❕ 𝙳𝙾𝚆𝙽𝙻𝙾𝙰𝙳 𝙲𝙾𝙼𝙼𝙰𝙽𝙳 𝙻𝙸𝚂𝚃 ❗
+
+╭─┈┄┉┅┅┅┅┅┅┅┅┅┅┅┅
+┋ ◉ *ɢɪᴛᴄʟᴏɴᴇ*
+┋ ◉ *ᴀᴘᴋ* 
+┋ ◉ *ᴛᴡɪᴛᴛᴇʀ* 
+┋ ◉ *ɢᴅʀɪᴠᴇ* 
+┋ ◉ *ᴍᴇᴅɪᴀғɪʀᴇ* 
+┋ ◉ *ғʙ*
+┋ ◉ *ɪɢ* 
+┋ ◉ *ᴍᴏᴠɪᴇ*
+┋ ◉ *soɴɢ* 
+┋ ◉ *ᴠɪᴅᴇᴏ*
+┋ ◉ *ᴠɪᴅᴇᴏ2*
+┋ ◉ *ᴠɪᴅᴇᴏ3*
+┋ ◉ *ᴠɪᴅᴇᴏ4*
+┋ ◉ *ᴘʟᴀʏ*
+┋ ◉ *ᴘʟᴀʏ2*
+┋ ◉ *ᴘʟᴀʏ3*
+┋ ◉ *ᴘʟᴀʏ4*
+┋ ◉ *ʏᴛ*
+┋ ◉ *ᴛɪᴋᴛᴏᴋ/ᴛᴛ* 
+┋ ◉ *ɪᴍɢ* 
+┋ ◉ *ʏᴛᴀ*
+╰━━━━∙⋆⋅⋆∙┉─ • ─┉─⊷
+
+⭓ *ᴛᴏᴛᴀʟ ᴄᴏᴍᴍᴀɴᴅs ʟɪsᴛ ᴅᴏᴡɴʟᴏᴀᴅ: 21*
+
+> *ʟᴏʀᴅ xᴍᴅ ᴄʀᴇᴀᴛᴇᴅ ʙʏ ᴋɪɴɢ ᴍᴀʟᴠɪɴッッ*`);
+                        break;
+                    case '6':               
+                        reply(`❕ 𝙼𝙰𝙸𝙽 𝙲𝙾𝙼𝙼𝙰𝙽𝙳 𝙻𝙸𝚂𝚃 ❗
+
+╭─┈┄┉┅┅┅┅┅┅┅┅┅┅┅┅
+┋ ◉ *ᴀʟɪᴠᴇ* 
+┋ ◉ *ᴀʙᴏᴜᴛ* 
+┋ ◉ *ᴍᴇɴᴜ* 
+┋ ◉ *ᴀʟʟᴍᴇɴᴜ* 
+┋ ◉ *sᴜᴘᴘᴏʀᴛ* 
+┋ ◉ *ꜱʏꜱᴛᴇᴍ* 
+┋ ◉ *ᴘɪɴɢ* 
+┋ ◉ *ʀᴜɴᴛɪᴍᴇ* 
+╰━━━━∙⋆⋅⋆∙━  • ─┉─⊷
+
+⭓ *ᴛᴏᴛᴀʟ ᴄᴏᴍᴍᴀɴᴅs ʟɪsᴛ ᴍᴀɪɴ: 8*
+
+> *© ʟᴏʀᴅ xᴍᴅ ᴄʀᴇᴀᴛᴇᴅ ʙʏ ᴋɪɴɢ ᴍᴀʟᴠɪɴッッ*`);
+                        break;
+                    case '7':               
+                        reply(`❕ 𝙶𝚁𝙾𝚄𝙿 𝙲𝙾𝙼𝙼𝙰𝙽𝙳 𝙻𝙸𝚂𝚃 ❗
+
+╭─┈┄┉┅┅┅┅┅┅┅┅┅┅┅
+┋◉ ᴘʀᴏᴍᴏᴛᴇ
+┋◉ ᴅᴇᴍᴏᴛᴇ
+┋◉ ᴋɪᴄᴋ
+┋◉ ᴀᴅᴅ
+┋◉ ɢᴇᴛᴘɪᴄ 
+┋◉ sᴇᴛᴡᴇʟᴄᴏᴍᴇ
+┋◉ sᴇᴛɢᴏᴏᴅʙʏᴇ
+┋◉ ᴀᴅᴍɪɴs
+┋◉ ɢɴᴀᴍᴇ 
+┋◉ ᴛᴀɢᴀʟʟ 
+┋◉ ᴛᴀɢᴀᴅᴍɪɴ 
+┋◉ ᴏᴘᴇɴᴛɪᴍʀ/ᴄʟᴏsᴇᴛɪᴍᴇ 
+┋◉ ɢɪɴғᴏ
+┋◉ ɢʟɪɴᴋ 
+┋◉ ɢᴅᴇsᴄ
+┋◉ ᴍᴜᴛᴇ
+┋◉ ᴜɴᴍᴜᴛᴇ
+┋◉ ʟᴏᴄᴋ
+┋◉ ᴜɴʟᴏᴄᴋ
+┋◉ ᴅᴇʟᴇᴛᴇ
+┋◉ ᴋɪᴄᴋᴀʟʟ
+╰━━━━∙⋆⋅⋆∙━ ─ • ─⊷
+⭓ *ᴛᴏᴛᴀʟ ᴄᴏᴍᴍᴀɴᴅs ʟɪsᴛ ɢʀᴏᴜᴘ: 21*
+
+> *ʟᴏʀᴅ xᴍᴅ ᴄʀᴇᴀᴛᴇᴅ ʙʏ ᴋɪɴɢ ᴍᴀʟᴠɪɴッ*`);
+                       break;
+                    case '8':               
+                        reply(`❕ 𝙵𝚄𝙽 𝙲𝙾𝙼𝙼𝙰𝙽𝙳 𝙻𝙸𝚂𝚃 ❗
+
+╭┈┉┉┉┉┉┉┈┈┈┈┈┈┈
+┋◉ ᴅᴏɢ
+┋◉ ғᴀᴄᴛ 
+┋◉ ʜᴀᴄᴋ
+┋◉ ϙᴜᴏᴛᴇ
+┋◉ ʀᴠɪᴅᴇᴏ
+┋◉ ʙɪʙʟᴇ
+╰━━━━∙⋆⋅⋆∙━ ─┉─⊷
+
+⭓ *ᴛᴏᴛᴀʟ ᴄᴏᴍᴍᴀɴᴅs ʟɪsᴛ ғᴜɴ: 6*
+
+> *ʟᴏʀᴅ xᴍᴅ ᴄʀᴇᴀᴛᴇᴅ ʙʏ ᴋɪɴɢ ᴍᴀʟᴠɪɴッッ*`);
+                       break;
+                    case '9':               
+                        repl (`❕ 𝙰𝙽𝙸𝙼𝙴 𝙲𝙾𝙼𝙼𝙰𝙽𝙳 𝙻𝙸𝚂𝚃 ❗
+
+╭┈┈┈┈┈┉┉┉┈┈┈┈┈┈┈
+┋◉ ᴡᴀɪғᴜ
+┋◉ ɴᴇᴋᴏ
+┋◉ ᴍᴇɢᴜᴍɪɴ
+┋◉ ᴍᴀɪᴅ
+┋◉ ᴀᴡᴏᴏ
+┋◉ ʟᴏʟɪ
+╰━━━━∙⋆⋅⋆∙━ ─┉┉─⊷
+
+⭓ *ᴛᴏᴛᴀʟ ᴄᴏᴍᴍᴀɴᴅs ʟɪsᴛ ᴄᴏɴᴠᴇʀᴛ: 6*
+
+> *© ʟᴏʀᴅ xᴍᴅ ᴄʀᴇᴀᴛᴇᴅ ʙʏ ᴋɪɴɢ ᴍᴀʟᴠɪɴッ*`);
+                        break;
+                    case '10':               
+                        reply(`*❗ 𝙾𝚃𝙷𝙴𝚁 𝙲𝙾𝙼𝙼𝙰𝙽𝙳 𝙻𝙸𝚂𝚃 ❗*
+
+╭┈┈┈┈┉┉┉┉┉┉┉┉┈┈┈
+┋◉ ᴛʀᴛ
+┋◉ ᴀɴɪᴍᴇ
+┋◉ ᴍᴏᴠɪᴇ
+┋◉ ɢɪᴛ
+┋◉ ɢᴘᴀꜱꜱ
+┋◉ ǫᴜᴏᴛᴇ
+┋◉ ғᴀɴᴄʏ
+┋◉ ᴅᴇꜰɪɴᴇ
+┋◉ ᴜʀʟ
+┋◉ sᴀᴠᴇ
+┋◉ ᴘᴀɪʀ <ᴘᴜᴛ ᴜʀ #>
+╰━━━━∙⋆⋅⋆∙━ ─┉─ ─⊷
+
+⭓ *ᴛᴏᴛᴀʟ ᴄᴏᴍᴍᴀɴᴅs ʟɪsᴛ ᴏᴛʜᴇʀ 11*
+
+> *ʟᴏʀᴅ xᴍᴅ ᴄʀᴇᴀᴛᴇᴅ ʙʏ ᴋɪɴɢ ᴍᴀʟᴠɪɴッッ*`);
+
+
+                        break;
+                    default:
+                        reply("Invalid option. Please select a valid option❗");
                 }
-            },
-            { quoted: mek }
-        );
 
-        // Send audio
-        await conn.sendMessage(from, {
-            audio: { url: 'https://github.com/JawadYTX/KHAN-DATA/raw/refs/heads/main/autovoice/sigma.m4a' },
-            mimetype: 'audio/mp4',
-            ptt: true
-        }, { quoted: mek });
-        
-    } catch (e) {
-        console.log(e);
-        reply(`${e}`);
-    }
-});
-
-
-// dlmenu
-
-cmd({
-    pattern: "dlmenu",
-    desc: "menu the bot",
-    category: "menu",
-    react: "⤵️",
-    filename: __filename
-}, 
-async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
-    try {
-        let dec = `╭━━〔 *𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱 𝗠𝗲𝗻𝘂* 〕━━┈⊷
-┃◈╭─────────────·๏
-┃◈┃• facebook
-┃◈┃• mediafire
-┃◈┃• tiktok
-┃◈┃• twitter
-┃◈┃• Insta
-┃◈┃• apk
-┃◈┃• img
-┃◈┃• spotify
-┃◈┃• play
-┃◈┃• play2
-┃◈┃• play3
-┃◈┃• tt2
-┃◈┃• audio
-┃◈┃• video
-┃◈┃• video2
-┃◈┃• ytmp3
-┃◈┃• ytmp4
-┃◈┃• song
-┃◈┃• darama
-┃◈┃• git
-┃◈┃• gdrive
-┃◈┃• smovie
-┃◈┃• baiscope 
-┃◈┃• ginisilia 
-┃◈└───────────┈⊷
-╰──────────────┈⊷
-> ${config.DESCRIPTION}`;
-
-        await conn.sendMessage(
-            from,
-            {
-                image: { url: `https://i.ibb.co/9N1sJ41/Manul-Ofc-X.jpg` },
-                caption: dec,
-                contextInfo: {
-                    mentionedJid: [m.sender],
-                    forwardingScore: 999,
-                    isForwarded: true,
-                    forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363358310754973@newsletter',
-                        newsletterName: 'Mʀ-Sʜᴀʙᴀɴ',
-                        serverMessageId: 143
-                    }
-                }
-            },
-            { quoted: mek }
-        );
-
-    } catch (e) {
-        console.log(e);
-        reply(`${e}`);
-    }
-});
-
-// group menu
-
-cmd({
-    pattern: "groupmenu",
-    desc: "menu the bot",
-    category: "menu",
-    react: "⤵️",
-    filename: __filename
-}, 
-async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
-    try
-       {
-        let dec = `╭━━〔 *𝗚𝗿𝗼𝘂𝗽 𝗠𝗲𝗻𝘂* 〕━━┈⊷
-┃◈╭─────────────·๏
-┃◈┃• grouplink
-┃◈┃• kickall
-┃◈┃• kickall2
-┃◈┃• kickall3
-┃◈┃• add
-┃◈┃• remove
-┃◈┃• kick
-┃◈┃• promote 
-┃◈┃• demote
-┃◈┃• dismiss 
-┃◈┃• revoke
-┃◈┃• setgoodbye
-┃◈┃• setwelcome
-┃◈┃• delete 
-┃◈┃• getpic
-┃◈┃• ginfo
-┃◈┃• delete 
-┃◈┃• disappear on
-┃◈┃• disappear off
-┃◈┃• disappear 7D,24H
-┃◈┃• allreq
-┃◈┃• updategname
-┃◈┃• updategdesc
-┃◈┃• joinrequests
-┃◈┃• senddm
-┃◈┃• nikal
-┃◈┃• mute
-┃◈┃• unmute
-┃◈┃• lockgc
-┃◈┃• unlockgc
-┃◈┃• invite
-┃◈┃• tag
-┃◈┃• hidetag
-┃◈┃• tagall
-┃◈┃• tagadmins
-┃◈└───────────┈⊷
-╰──────────────┈⊷
-> ${config.DESCRIPTION}`;
-
-        await conn.sendMessage(
-            from,
-            {
-                image: { url: `https://i.ibb.co/9N1sJ41/Manul-Ofc-X.jpg` },
-                caption: dec,
-                contextInfo: {
-                    mentionedJid: [m.sender],
-                    forwardingScore: 999,
-                    isForwarded: true,
-                    forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363358310754973@newsletter',
-                        newsletterName: 'Mʀ-Sʜᴀʙᴀɴ',
-                        serverMessageId: 143
-                    }
-                }
-            },
-            { quoted: mek }
-        );
-
-    } catch (e) {
-        console.log(e);
-        reply(`${e}`);
-    }
-});
-
-// fun menu
-
-cmd({
-    pattern: "funmenu",
-    desc: "menu the bot",
-    category: "menu",
-    react: "😎",
-    filename: __filename
-}, 
-async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
-    try {
-
-        let dec = `╭━━〔 *𝗙𝘂𝗻 𝗠𝗲𝗻𝘂* 〕━━┈⊷
-┃◈╭─────────────·๏
-┃◈┃• insult
-┃◈┃• pickup
-┃◈┃• ship
-┃◈┃• character
-┃◈┃• hack
-┃◈┃• joke
-┃◈┃• hrt
-┃◈┃• hpy
-┃◈┃• syd
-┃◈┃• anger
-┃◈┃• shy
-┃◈┃• kiss
-┃◈┃• mon
-┃◈┃• cunfuzed
-┃◈┃• setpp
-┃◈┃• hand
-┃◈┃• nikal
-┃◈┃• hold
-┃◈┃• hug
-┃◈┃• nikal
-┃◈┃• hifi
-┃◈┃• poke
-┃◈└───────────┈⊷
-╰──────────────┈⊷
-> ${config.DESCRIPTION}`;
-
-        await conn.sendMessage(
-            from,
-            {
-                image: { url: `https://i.ibb.co/9N1sJ41/Manul-Ofc-X.jpg` },
-                caption: dec,
-                contextInfo: {
-                    mentionedJid: [m.sender],
-                    forwardingScore: 999,
-                    isForwarded: true,
-                    forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363358310754973@newsletter',
-                        newsletterName: 'Mʀ-Sʜᴀʙᴀɴ',
-                        serverMessageId: 143
-                    }
-                }
-            },
-            { quoted: mek }
-        );
+            }
+        });
 
     } catch (e) {
-        console.log(e);
-        reply(`${e}`);
+        console.error(e);
+        await conn.sendMessage(from, { react: { text: '❌', key: mek.key } })
+        reply('An error occurred while processing your request.');
     }
 });
-
-// other menu
-
-cmd({
-    pattern: "othermenu",
-    desc: "menu the bot",
-    category: "menu",
-    react: "🤖",
-    filename: __filename
-}, 
-async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
-    try {
-        let dec = `╭━━〔 *𝗢𝘁𝗵𝗲𝗿 𝗠𝗲𝗻𝘂* 〕━━┈⊷
-┃◈╭─────────────·๏
-┃◈┃• vv
-┃◈┃• pair
-┃◈┃• pair2
-┃◈┃• fact
-┃◈┃• fancy
-┃◈┃• define
-┃◈┃• news
-┃◈┃• movie
-┃◈┃• weather
-┃◈┃• srepo
-┃◈┃• insult
-┃◈┃• save
-┃◈┃• wikipedia
-┃◈┃• gpass
-┃◈┃• githubstalk
-┃◈┃• yts
-┃◈┃• ytv
-┃◈└───────────┈⊷
-╰──────────────┈⊷
-> ${config.DESCRIPTION}`;
-
-        await conn.sendMessage(
-            from,
-            {
-                image: { url: `https://i.ibb.co/9N1sJ41/Manul-Ofc-X.jpg` },
-                caption: dec,
-                contextInfo: {
-                    mentionedJid: [m.sender],
-                    forwardingScore: 999,
-                    isForwarded: true,
-                    forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363358310754973@newsletter',
-                        newsletterName: 'Mʀ-Sʜᴀʙᴀɴ',
-                        serverMessageId: 143
-                    }
-                }
-            },
-            { quoted: mek }
-        );
-
-    } catch (e) {
-        console.log(e);
-        reply(`${e}`);
-    }
-});
-
-// main menu
-
-cmd({
-    pattern: "mainmenu",
-    desc: "menu the bot",
-    category: "menu",
-    react: "🗿",
-    filename: __filename
-}, 
-async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
-    try {
-        let dec = `╭━━〔 *𝗠𝗮𝗶𝗻 𝗠𝗲𝗻𝘂* 〕━━┈⊷
-┃◈╭─────────────·๏
-┃◈┃• ping
-┃◈┃• live 
-┃◈┃• alive
-┃◈┃• runtime
-┃◈┃• uptime 
-┃◈┃• repo
-┃◈┃• owner
-┃◈┃• menu
-┃◈┃• menu2
-┃◈┃• restart
-┃◈└───────────┈⊷
-╰──────────────┈⊷
-> ${config.DESCRIPTION}`;
-
-        await conn.sendMessage(
-            from,
-            {
-                image: { url: `https://i.ibb.co/9N1sJ41/Manul-Ofc-X.jpg` },
-                caption: dec,
-                contextInfo: {
-                    mentionedJid: [m.sender],
-                    forwardingScore: 999,
-                    isForwarded: true,
-                    forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363358310754973@newsletter',
-                        newsletterName: 'Mʀ-Sʜᴀʙᴀɴ',
-                        serverMessageId: 143
-                    }
-                }
-            },
-            { quoted: mek }
-        );
-
-    } catch (e) {
-        console.log(e);
-        reply(`${e}`);
-    }
-});
-
-// owner menu
-
-cmd({
-    pattern: "ownermenu",
-    desc: "menu the bot",
-    category: "menu",
-    react: "🔰",
-    filename: __filename
-}, 
-async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
-    try {
-        let dec = `╭━━〔 *𝗢𝘄𝗻𝗲𝗿 𝗠𝗲𝗻𝘂* 〕━━┈⊷
-┃◈╭─────────────·๏
-┃◈┃• owner
-┃◈┃• menu
-┃◈┃• menu2
-┃◈┃• listcmd
-┃◈┃• allmenu
-┃◈┃• repo
-┃◈┃• block
-┃◈┃• unblock
-┃◈┃• fullpp
-┃◈┃• setpp
-┃◈┃• restart
-┃◈┃• shutdown
-┃◈┃• updatecmd
-┃◈┃• alive
-┃◈┃• ping 
-┃◈┃• gjid
-┃◈┃• jid
-┃◈└───────────┈⊷
-╰──────────────┈⊷
-> ${config.DESCRIPTION}`;
-
-        await conn.sendMessage(
-            from,
-            {
-                image: { url: `https://i.ibb.co/9N1sJ41/Manul-Ofc-X.jpg` },
-                caption: dec,
-                contextInfo: {
-                    mentionedJid: [m.sender],
-                    forwardingScore: 999,
-                    isForwarded: true,
-                    forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363358310754973@newsletter',
-                        newsletterName: 'Mʀ-Sʜᴀʙᴀɴ',
-                        serverMessageId: 143
-                    }
-                }
-            },
-            { quoted: mek }
-        );
-
-    } catch (e) {
-        console.log(e);
-        reply(`${e}`);
-    }
-});
-
-// convert menu
-
-cmd({
-    pattern: "convertmenu",
-    desc: "menu the bot",
-    category: "menu",
-    react: "🥀",
-    filename: __filename
-}, 
-async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
-    try {
-        let dec = `╭━━〔 *𝗖𝗼𝗻𝘃𝗲𝗿𝘁 𝗠𝗲𝗻𝘂* 〕━━┈⊷
-┃◈╭─────────────·๏
-┃◈┃• sticker
-┃◈┃• sticker2
-┃◈┃• fancy
-┃◈┃• take
-┃◈┃• tomp3
-┃◈┃• tts
-┃◈┃• trt
-┃◈└───────────┈⊷
-╰──────────────┈⊷
-> ${config.DESCRIPTION}`;
-
-        await conn.sendMessage(
-            from,
-            {
-                image: { url: `https://i.ibb.co/9N1sJ41/Manul-Ofc-X.jpg` },
-                caption: dec,
-                contextInfo: {
-                    mentionedJid: [m.sender],
-                    forwardingScore: 999,
-                    isForwarded: true,
-                    forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363358310754973@newsletter',
-                        newsletterName: 'Mʀ-Sʜᴀʙᴀɴ',
-                        serverMessageId: 143
-                    }
-                }
-            },
-            { quoted: mek }
-        );
-
-    } catch (e) {
-        console.log(e);
-        reply(`${e}`);
-    }
-});
-
-
-// anmie menu 
-
-cmd({
-    pattern: "animemenu",
-    desc: "menu the bot",
-    category: "menu",
-    react: "🧚",
-    filename: __filename
-}, 
-async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
-    try {
-          let dec = `╭━━〔 *𝗔𝗻𝗶𝗺𝗲 𝗠𝗲𝗻𝘂* 〕━━┈⊷
-┃◈╭─────────────·๏
-┃◈┃• fack
-┃◈┃• dog
-┃◈┃• awoo
-┃◈┃• garl
-┃◈┃• waifu
-┃◈┃• neko
-┃◈┃• megnumin
-┃◈┃• neko
-┃◈┃• maid
-┃◈┃• loli
-┃◈┃• animegirl
-┃◈┃• animegirl
-┃◈┃• animegirl1
-┃◈┃• animegirl2
-┃◈┃• animegirl3
-┃◈┃• animegirl4
-┃◈┃• animegirl5
-┃◈┃• anime1
-┃◈┃• anime1
-┃◈┃• anime2
-┃◈┃• anime3
-┃◈┃• anime4
-┃◈┃• anime5
-┃◈┃• animenews
-┃◈┃• foxgirl
-┃◈┃• naruto
-┃◈└───────────┈⊷
-╰──────────────┈⊷
-> ${config.DESCRIPTION}`;
-
-        await conn.sendMessage(
-            from,
-            {
-                image: { url: `https://i.ibb.co/9N1sJ41/Manul-Ofc-X.jpg` },
-                caption: dec,
-                contextInfo: {
-                    mentionedJid: [m.sender],
-                    forwardingScore: 999,
-                    isForwarded: true,
-                    forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363358310754973@newsletter',
-                        newsletterName: 'Mʀ-Sʜᴀʙᴀɴ',
-                        serverMessageId: 143
-                    }
-                }
-            },
-            { quoted: mek }
-        );
-
-    } catch (e) {
-        console.log(e);
-        reply(`${e}`);
-    }
-});
-
-
-// ai menu 
-
-cmd({
-    pattern: "aimenu",
-    desc: "menu the bot",
-    category: "menu",
-    react: "🤖",
-    filename: __filename
-}, 
-async (conn, mek, m, { from, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply }) => {
-    try {
-        let dec = `╭━━〔 *𝗔𝗶 𝗠𝗲𝗻𝘂* 〕━━┈⊷
-┃◈╭─────────────·๏
-┃◈┃• ai
-┃◈┃• gpt
-┃◈┃• meta
-┃◈┃• blackbox
-┃◈┃• gpt4
-┃◈┃• bing
-┃◈┃• copilot
-┃◈└───────────┈⊷
-╰──────────────┈⊷
-> ${config.DESCRIPTION}`;
-
-        await conn.sendMessage(
-            from,
-            {
-                image: { url: `https://i.ibb.co/9N1sJ41/Manul-Ofc-X.jpg` },
-                caption: dec,
-                contextInfo: {
-                    mentionedJid: [m.sender],
-                    forwardingScore: 999,
-                    isForwarded: true,
-                    forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363358310754973@newsletter',
-                        newsletterName: 'Mʀ-Sʜᴀʙᴀɴ',
-                        serverMessageId: 143
-                    }
-                }
-            },
-            { quoted: mek }
-        );
-
-    } catch (e) {
-        console.log(e);
-        reply(`${e}`);
-    }
-});
-
