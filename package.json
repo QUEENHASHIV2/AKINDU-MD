@@ -1,12 +1,12 @@
 {
-  "name": "SHABAN-SOBX-MD",
-  "version": "3.0.0",
+  "name": "AKINDU MD",
+  "version": "1.0.0",
   "description": "A WhatsApp Bot Created By MrShaban",
   "main": "index.js",
   "scripts": {
-    "start": "pm2 start index.js --deep-monitoring --attach --name SHABAN-SOBX-MD",
-    "stop": "pm2 stop SHABAN-SOBX-MD",
-    "restart": "pm2 restart SHABAN-SOBX-MD"
+    "start": "pm2 start index.js --deep-monitoring --attach --name AKINDU MD",
+    "stop": "pm2 stop AKINDU MD",
+    "restart": "pm2 restart AKINDU MD"
   },
   "dependencies": {
     "@whiskeysockets/baileys": "6.6.0",
