@@ -1,8 +1,8 @@
 {
-  "name": "SHABAN-SOBX-MD",
-  "description": "Jᴀᴠᴀsᴄʀɪᴘᴛ Wʜᴀᴛsᴀᴘᴘ Bᴏᴛ Mᴀᴅᴇ Bʏ Mʀ Sʜᴀʙᴀɴ",
-  "logo": "https://i.ibb.co/9N1sJ41/Manul-Ofc-X.jpg",
-  "keywords": ["sʜᴀʙᴀɴ-sᴏʙx-ᴍᴅ"],
+  "name": "AKINDU MD",
+  "description": "OWNER AKINDU MD",
+  "logo": "https://i.ibb.co/nMky5xTB/7341.jpg",
+  "keywords": ["AKINDU MD"],
   "success_url": "/",
 
     "stack": "container",
@@ -16,7 +16,7 @@
     "STICKER_NAME": {
       "description": "type your sticker pack name.",
       "required": false,
-      "value": "SHABAN-SOBX-MD"
+      "value": "AKINDU MD"
     }, 
       
     "PREFIX": {
@@ -73,27 +73,27 @@
     "AUTO_STATUS_MSG": {
       "description": "Type custom message on status reply",
       "required": false,
-      "value": "*Jᴜsᴛ Nᴏᴡ Sᴛᴀᴛᴜs Sᴇᴇɴ Bʏ ᯽Sʜᴀʙᴀɴ-Sᴏʙx-Mᴅ᯽*"
+      "value": "*JUST NOW 😁*"
    
      }, 
     
     "OWNER_NAME": {
       "description": "Type Bot Owner Name.",
       "required": false,
-      "value": "Mʀ Sʜᴀʙᴀɴ"
+      "value": "MR AKINDU"
 }, 
 
     "OWNER_NUMBER": {
       "description": "put the owner number for bot.",
       "required": false,
-      "value": "923059395959"
+      "value": "94764703165"
 
     }, 
 
     "BOT_NAME": {
       "description": "Type here the bot name.",
       "required": false,
-      "value": "SHABAN-SOBX-MD"
+      "value": "AKINDU MD"
 
       }, 
 
@@ -113,13 +113,13 @@
      "DESCRIPTION": {
       "description": "add caption for menu and other",
       "required": false,
-      "value": "*© ᴘᴏᴡᴇʀᴇᴅ ʙʏ Mʀ Sʜᴀʙᴀɴ*"
+      "value": "*AKINDU MD*"
     },
 
       "DELETE_LINKS": {
       "description": "remove links from group automatically without removing member",
       "required": false,
-      "value": "true"
+      "value": "false"
     },
     
     "AUTO_RECORDING": {
